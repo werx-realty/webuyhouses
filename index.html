@@ -835,7 +835,7 @@ textarea.form-input{resize:vertical;min-height:120px}
       <p>We're reviewing your property details right now. Expect a call from our local team within the next few hours — and a written cash offer within 24 hours.</p>
       <div style="background:rgba(255,255,255,.07);border-radius:var(--radius-lg);padding:32px;margin-bottom:32px;text-align:left">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="font-size:24px">📞</span><div><strong style="display:block">Call us directly</strong><span style="color:rgba(255,255,255,.6)">(559) 647-1567</span></div></div>
-        <div style="display:flex;align-items:center;gap:12px"><span style="font-size:24px">📧</span><div><strong style="display:block">Email us</strong><span style="color:rgba(255,255,255,.6)">Tafoyarealestate@gmail.com</span></div></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="font-size:24px">📧</span><div><strong style="display:block">Email us</strong><span style="color:rgba(255,255,255,.6)">tafoyrealestate@gmail.com</span></div></div>
       </div>
       <a class="btn btn-primary" href="#" onclick="showPage('home');return false">← Back to Homepage</a>
     </div>
@@ -992,7 +992,7 @@ textarea.form-input{resize:vertical;min-height:120px}
         </div>
         <div class="contact-detail">
           <div class="contact-icon">📧</div>
-          <div><strong>Email</strong><span>Tafoyarealestate@gmail.com</span></div>
+          <div><strong>Email</strong><span>tafoyrealestate@gmail.com</span></div>
         </div>
         <div class="contact-detail">
           <div class="contact-icon">🕐</div>
@@ -1038,7 +1038,7 @@ function sendContactForm(btn){
   let body='Contact Form Submission\n=======================\n';
   const labels=['First Name','Last Name','Email','Phone','Property Address','Situation','Message'];
   inputs.forEach((inp,i)=>{body+=(labels[i]||'Field '+(i+1))+': '+(inp.value||'N/A')+'\n'});
-  window.location.href='mailto:Tafoyarealestate@gmail.com?subject=Website%20Contact%20Form%20Submission&body='+encodeURIComponent(body);
+  window.location.href='mailto:tafoyrealestate@gmail.com?subject=Website%20Contact%20Form%20Submission&body='+encodeURIComponent(body);
   btn.innerHTML='✅ Message Sent! We\'ll be in touch shortly.';
   btn.style.background='var(--green)';
 }
@@ -1074,7 +1074,7 @@ function sendContactForm(btn){
       <div class="footer-col">
         <h4>Contact</h4>
         <a href="tel:5596471567">(559) 647-1567</a>
-        <a href="mailto:Tafoyarealestate@gmail.com">Tafoyarealestate@gmail.com</a>
+        <a href="mailto:tafoyrealestate@gmail.com">tafoyrealestate@gmail.com</a>
         <a href="#" onclick="showPage('contact');return false">Contact Form</a>
       </div>
     </div>
@@ -1218,7 +1218,7 @@ function submitQuiz(){
     +'Mortgage: '+(quizData.mortgage||'')+'\n'
     +'Price Range: '+(quizData.price||'')+'\n'
   );
-  window.location.href='mailto:Tafoyarealestate@gmail.com?subject=New%20Cash%20Offer%20Request%20-%20'+encodeURIComponent(addr)+'&body='+body;
+  window.location.href='mailto:tafoyrealestate@gmail.com?subject=New%20Cash%20Offer%20Request%20-%20'+encodeURIComponent(addr)+'&body='+body;
   document.getElementById('qstep-8').classList.remove('active');
   const complete=document.getElementById('quizComplete');
   complete.classList.add('show');
