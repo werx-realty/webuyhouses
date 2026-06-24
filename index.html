@@ -1086,7 +1086,14 @@ function sendContactForm(btn){
   let body='Contact Form Submission\n=======================\n';
   const labels=['First Name','Last Name','Email','Phone','Property Address','Situation','Message'];
   inputs.forEach((inp,i)=>{body+=(labels[i]||'Field '+(i+1))+': '+(inp.value||'N/A')+'\n'});
-  window.location.href='mailto:tafoyrealestate@gmail.com?subject=Website%20Contact%20Form%20Submission&body='+encodeURIComponent(body);
+  var _v=function(i){return (inputs[i]&&inputs[i].value)?inputs[i].value.trim():'';};
+  var _msg=_v(6); var _reason=_v(5)+(_msg?(' — '+_msg):'');
+  sendToCRM({
+    name:(_v(0)+' '+_v(1)).trim(), email:_v(2), phone:_v(3), property_address:_v(4),
+    reason:_reason, ownership:'', timeline:'', property_type:'', condition:'', mortgage:'',
+    price_range:'', source:window.location.href
+  });
+  // mailto removed — lead is sent only to the CRM
   btn.innerHTML='✅ Message Sent! We\'ll be in touch shortly.';
   btn.style.background='var(--green)';
 }
@@ -1326,6 +1333,20 @@ function sendContactForm(btn){
 </footer>
 
 <script>
+// ===== CRM (SUPABASE) LEAD CAPTURE =====
+const SUPABASE_URL='https://bovhpvqtiocfhpzjgbab.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvdmhwdnF0aW9jZmhwempnYmFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDQ1MTQsImV4cCI6MjA5Nzg4MDUxNH0.rVith5a5b2gTzMJf-aSoEi0tW9xLh0ussoDF70ywPgE';
+function sendToCRM(lead){
+  try{ lead.workspace='shared';
+    fetch(SUPABASE_URL+'/rest/v1/leads',{
+      method:'POST',
+      headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(lead),
+      keepalive:true
+    }).then(function(r){if(!r.ok){r.text().then(function(t){console.warn('[CRM] insert failed',r.status,t)})}else{console.log('[CRM] lead saved')}}).catch(function(e){console.warn('[CRM] error',e&&e.message)});
+  }catch(e){console.warn('[CRM] exception',e);}
+}
+
 // ===== CURSOR =====
 const dot = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
@@ -1459,7 +1480,13 @@ function submitQuiz(){
     +'Mortgage: '+(quizData.mortgage||'')+'\n'
     +'Price Range: '+(quizData.price||'')+'\n'
   );
-  window.location.href='mailto:tafoyrealestate@gmail.com?subject=New%20Cash%20Offer%20Request%20-%20'+encodeURIComponent(addr)+'&body='+body;
+  sendToCRM({
+    name:(fname+' '+lname).trim(), email:email, phone:phone, property_address:addr,
+    ownership:(quizData.ownership||''), timeline:(quizData.timeline||''), property_type:(quizData.type||''),
+    condition:(quizData.condition||''), reason:(quizData.reason||''), mortgage:(quizData.mortgage||''),
+    price_range:(quizData.price||''), source:window.location.href
+  });
+  // mailto removed — lead is sent only to the CRM
   document.getElementById('qstep-8').classList.remove('active');
   const complete=document.getElementById('quizComplete');
   complete.classList.add('show');
