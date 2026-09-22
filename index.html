@@ -1093,6 +1093,11 @@ function sendContactForm(btn){
     reason:_reason, ownership:'', timeline:'', property_type:'', condition:'', mortgage:'',
     price_range:'', source:window.location.href
   });
+  sendLeadEmail({
+    name:(_v(0)+' '+_v(1)).trim(), email:_v(2), phone:_v(3), property_address:_v(4),
+    reason:_reason, ownership:'', timeline:'', property_type:'', condition:'', mortgage:'',
+    price_range:'', source:window.location.href
+  });
   // mailto removed — lead is sent only to the CRM
   btn.innerHTML='✅ Message Sent! We\'ll be in touch shortly.';
   btn.style.background='var(--green)';
@@ -1347,6 +1352,19 @@ function sendToCRM(lead){
   }catch(e){console.warn('[CRM] exception',e);}
 }
 
+// ===== LEAD EMAIL NOTIFICATION (separate from CRM) =====
+function sendLeadEmail(lead){
+  try{
+    var d={_subject:'New Website Lead - '+(lead.name||'SJT Properties'),_template:'table',_captcha:'false'};
+    for(var k in lead){ if(lead[k]) d[k]=lead[k]; }
+    if(lead.email) d._replyto=lead.email;
+    fetch('https://formsubmit.co/ajax/tafoyarealestate@gmail.com',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(d),keepalive:true
+    }).catch(function(e){console.warn('[EMAIL] error',e&&e.message)});
+  }catch(e){console.warn('[EMAIL] exception',e);}
+}
+
 // ===== CURSOR =====
 const dot = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
@@ -1481,6 +1499,12 @@ function submitQuiz(){
     +'Price Range: '+(quizData.price||'')+'\n'
   );
   sendToCRM({
+    name:(fname+' '+lname).trim(), email:email, phone:phone, property_address:addr,
+    ownership:(quizData.ownership||''), timeline:(quizData.timeline||''), property_type:(quizData.type||''),
+    condition:(quizData.condition||''), reason:(quizData.reason||''), mortgage:(quizData.mortgage||''),
+    price_range:(quizData.price||''), source:window.location.href
+  });
+  sendLeadEmail({
     name:(fname+' '+lname).trim(), email:email, phone:phone, property_address:addr,
     ownership:(quizData.ownership||''), timeline:(quizData.timeline||''), property_type:(quizData.type||''),
     condition:(quizData.condition||''), reason:(quizData.reason||''), mortgage:(quizData.mortgage||''),
